@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Taakid Privacy Policy</title>
+<meta name="description" content="What the Taakid Shopify app does with order and buyer data.">
+<style>
+  :root { color-scheme: light dark; --ink:#1d1a17; --muted:#6f6760; --line:#e6ddd3; --accent:#B5492E; --bg:#fffaf4; }
+  @media (prefers-color-scheme: dark) { :root { --ink:#f1ebe4; --muted:#b3a99f; --line:#3a332d; --accent:#e88a68; --bg:#171310; } }
+  body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+  main { max-width:760px; margin:0 auto; padding:40px 20px 80px; }
+  h1 { font-size:30px; margin:0 0 4px; }
+  h2 { font-size:20px; margin-top:36px; padding-bottom:6px; border-bottom:1px solid var(--line); }
+  .meta { color:var(--muted); margin-bottom:28px; }
+  a { color:var(--accent); }
+  table { border-collapse:collapse; width:100%; margin:12px 0; display:block; overflow-x:auto; }
+  th, td { border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top; font-size:14px; }
+  code { background:#8882; padding:1px 5px; border-radius:4px; }
+</style>
+</head>
+<body>
+<main>
+<h1>Privacy Policy</h1>
+<p class="meta">Taakid, by Amrania Labs · Last updated: 3 October 2026 · Contact: <a href="mailto:amrani4online@gmail.com">amrani4online@gmail.com</a></p>
+
+<p>Taakid ("the App") is a Shopify application that helps merchants confirm cash-on-delivery
+orders with their buyers before shipping them. This policy explains what data the App handles,
+why, and what rights merchants and buyers have.</p>
+
+<h2>Our role</h2>
+<p>The merchant who installs the App is the data controller for their buyers' data. Amrania Labs
+processes that data on the merchant's behalf, only to provide the App. Shopify Inc. holds the
+order data as the merchant's commerce platform.</p>
+
+<h2>What the App reads, and what it keeps</h2>
+<table>
+  <tr><th>Data</th><th>Why</th><th>Stored by the App?</th></tr>
+  <tr><td>Buyer name</td><td>To greet the buyer by name in the confirmation message the merchant sends</td><td><strong>No.</strong> Read from Shopify each time the merchant opens the confirmation board</td></tr>
+  <tr><td>Buyer phone number</td><td>To open a WhatsApp chat or a call with the buyer, and to recognise a buyer who refused a delivery before</td><td><strong>Never in readable form.</strong> Only a keyed one-way hash (HMAC-SHA-256 with a server secret) is stored, which cannot be reversed into the number</td></tr>
+  <tr><td>Shipping city and country</td><td>Shown on the board so the merchant can confirm the delivery area, and to pick the message language</td><td><strong>No.</strong> Read from Shopify when needed</td></tr>
+  <tr><td>Order number, items, total, payment method</td><td>Building the confirmation message and the merchant's dashboard</td><td>Only the order's Shopify ID, its name (for example #1042) and the confirmation status</td></tr>
+  <tr><td>Confirmation outcomes (confirmed, refused, no answer, refused at delivery)</td><td>The merchant's records, holds on unconfirmed orders, and the refuser memory</td><td>Yes, as statuses and counters linked to the order ID or the phone hash</td></tr>
+</table>
+<p>The App does not read or store buyer email addresses, street addresses, payment card data,
+or browsing behaviour. Messages are sent by the merchant from their own WhatsApp or phone; the
+App never sends messages itself and never sees their content after the merchant opens the chat.</p>
+
+<h2>The checkout rule</h2>
+<p>If the merchant turns it on, a Shopify Function decides at checkout whether to offer cash on
+delivery. It receives a list of short hashes of the phone numbers of buyers who refused a
+delivery, computed with a random per-store salt, and compares them with a hash of the phone
+number entered at checkout. The Function runs inside Shopify; no checkout data is sent to the
+App's servers.</p>
+
+<h2>Data about merchants</h2>
+<p>The store's domain, the App settings (message templates, languages, hold and checkout-rule
+options) and the subscription plan. Billing is handled entirely by Shopify.</p>
+
+<h2>Retention and deletion</h2>
+<ul>
+  <li>Order statuses are kept while the App is installed so the merchant can see their history.</li>
+  <li>When Shopify sends a <code>customers/redact</code> request, the App deletes that buyer's phone hash, counters and order records.</li>
+  <li>When the merchant uninstalls, sessions and plan data are deleted at once, and Shopify's <code>shop/redact</code> request 48 hours later deletes everything else.</li>
+</ul>
+
+<h2>Security</h2>
+<p>Data is stored in a managed PostgreSQL database run by our hosting provider, Railway, on a
+private network reachable only by the App. Webhooks from Shopify are verified by HMAC
+signature. Connections use TLS.</p>
+
+<h2>Sub-processors</h2>
+<table>
+  <tr><th>Provider</th><th>Purpose</th></tr>
+  <tr><td>Shopify Inc.</td><td>Commerce platform, authentication, billing</td></tr>
+  <tr><td>Railway Corp.</td><td>Application hosting and database</td></tr>
+</table>
+
+<h2>Your rights</h2>
+<p>Buyers can ask the merchant to access or delete their data; the merchant's request reaches
+the App through Shopify and is acted on automatically. Merchants can contact us at
+<a href="mailto:amrani4online@gmail.com">amrani4online@gmail.com</a> for any privacy question.
+We answer within 30 days.</p>
+
+<h2>Changes</h2>
+<p>We will update this page if the App's data handling changes, and change the date above.</p>
+</main>
+</body>
+</html>
