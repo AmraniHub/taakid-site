@@ -41,8 +41,9 @@
 
 <h2>3. Backups</h2>
 <ul>
-  <li>The database volume is backed up automatically every day (kept 6 days) and every week (kept 27 days), on the same encrypted storage.</li>
-  <li>Backups inherit the database's content, so they contain no readable buyer personal data either. Wiping or deleting the volume deletes its backups.</li>
+  <li>Every night the database is exported, compressed and encrypted with AES-256-GCM using a key held only by the app's operator and the backup job, then stored in a private repository. The 30 most recent backups are kept; older ones are deleted automatically.</li>
+  <li>Login sessions (Shopify access tokens) are not included. Backups therefore hold only settings, order statuses and phone hashes, none of it readable buyer personal data, and encrypted on top of that.</li>
+  <li>Restores are tested by decrypting a backup and checking it against the live database.</li>
 </ul>
 
 <h2>4. Retention and deletion</h2>
@@ -72,7 +73,7 @@
 <h2>8. Data loss prevention</h2>
 <ul>
   <li>Readable personal data is never written to the database, logs, backups or analytics, which removes most of what could leak.</li>
-  <li>Automated backups protect against loss or corruption; deploys are built from version-controlled source; secrets are rotated if exposure is suspected.</li>
+  <li>Nightly encrypted backups protect against loss or corruption; deploys are built from version-controlled source; secrets are rotated if exposure is suspected.</li>
 </ul>
 
 <h2>9. Security incident response</h2>
