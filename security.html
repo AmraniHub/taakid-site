@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Taakid Security Policy</title>
+<meta name="description" content="How the Taakid Shopify app protects buyers' personal data: access, logging, storage, backups and incident response.">
+<style>
+  :root { color-scheme: light dark; --ink:#1d1a17; --muted:#6f6760; --line:#e6ddd3; --accent:#B5492E; --bg:#fffaf4; }
+  @media (prefers-color-scheme: dark) { :root { --ink:#f1ebe4; --muted:#b3a99f; --line:#3a332d; --accent:#e88a68; --bg:#171310; } }
+  body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+  main { max-width:760px; margin:0 auto; padding:40px 20px 80px; }
+  h1 { font-size:30px; margin:0 0 4px; }
+  h2 { font-size:20px; margin-top:36px; padding-bottom:6px; border-bottom:1px solid var(--line); }
+  .meta { color:var(--muted); margin-bottom:28px; }
+  a { color:var(--accent); }
+  code { background:#8882; padding:1px 5px; border-radius:4px; }
+  ol li, ul li { margin:4px 0; }
+</style>
+</head>
+<body>
+<main>
+<h1>Security and Data Protection Policy</h1>
+<p class="meta">Taakid, by Amrania Labs · Last updated: 3 October 2026 · Contact: <a href="mailto:amrani4online@gmail.com">amrani4online@gmail.com</a></p>
+
+<p>This policy describes how Taakid protects the personal data of merchants' buyers. It complements the <a href="privacy.html">privacy policy</a>, which lists what the app reads and why.</p>
+
+<h2>1. Data minimisation</h2>
+<ul>
+  <li>The app reads a buyer's name, phone number and shipping city and country from Shopify only when the merchant opens the confirmation board or an order, and only to show them and build the confirmation message.</li>
+  <li>None of these is stored in readable form. The only buyer identifier kept is a keyed one-way hash of the phone number (HMAC-SHA-256 with a server secret), which cannot be turned back into the number.</li>
+  <li>The app never reads email addresses, street addresses, payment data or browsing behaviour.</li>
+</ul>
+
+<h2>2. Storage and encryption</h2>
+<ul>
+  <li>Data is stored in a managed PostgreSQL database at Railway Corp., reachable only over Railway's private network by the app itself. Railway holds a SOC 2 Type II report and encrypts stored data at rest.</li>
+  <li>All traffic between Shopify, the app and the merchant's browser uses TLS. Webhooks from Shopify are accepted only with a valid HMAC signature.</li>
+  <li>Secrets (API credentials, the hashing key, the database URL) are held as encrypted environment variables at the host, never in source code or logs.</li>
+</ul>
+
+<h2>3. Backups</h2>
+<ul>
+  <li>The database volume is backed up automatically every day (kept 6 days) and every week (kept 27 days), on the same encrypted storage.</li>
+  <li>Backups inherit the database's content, so they contain no readable buyer personal data either. Wiping or deleting the volume deletes its backups.</li>
+</ul>
+
+<h2>4. Retention and deletion</h2>
+<ul>
+  <li>Order statuses and refusal counters are kept while the app is installed, so the merchant keeps their history.</li>
+  <li><code>customers/redact</code> requests delete that buyer's hash, counters and order records. Uninstalling deletes sessions and plan data at once; <code>shop/redact</code> 48 hours later deletes everything else for the store.</li>
+</ul>
+
+<h2>5. Access control</h2>
+<ul>
+  <li>Production systems and data are accessed only by the app's developer, the sole member of staff, and only to operate, support or fix the app.</li>
+  <li>Accounts that can reach production (Shopify Partners, Railway, GitHub) use unique strong passwords or passkeys, with two-factor authentication wherever the provider offers it.</li>
+  <li>Personal data is never exported, copied to personal devices, or shared with anyone other than the sub-processors listed in the privacy policy.</li>
+</ul>
+
+<h2>6. Logging</h2>
+<ul>
+  <li>Every read of buyers' personal data writes an audit line recording the store, the purpose (board, order page, outcome), the number of orders and the field names. The values themselves are never logged.</li>
+  <li>The app's logs, and the hosting provider's account activity logs, are kept by Railway.</li>
+</ul>
+
+<h2>7. Test and production data</h2>
+<ul>
+  <li>Development and testing use Shopify development stores with fictional buyers only. Real merchants' or buyers' data is never copied into development or test environments.</li>
+</ul>
+
+<h2>8. Data loss prevention</h2>
+<ul>
+  <li>Readable personal data is never written to the database, logs, backups or analytics, which removes most of what could leak.</li>
+  <li>Automated backups protect against loss or corruption; deploys are built from version-controlled source; secrets are rotated if exposure is suspected.</li>
+</ul>
+
+<h2>9. Security incident response</h2>
+<ol>
+  <li><b>Detect and contain</b>: on any sign of unauthorised access, rotate the affected credentials and the hashing key, revoke sessions, and take the affected component offline if needed.</li>
+  <li><b>Assess</b>: use the access log and the host's activity logs to establish what data and which stores were affected.</li>
+  <li><b>Notify</b>: inform affected merchants and Shopify without undue delay, and in any case within 72 hours of confirming an incident that affects personal data, with what happened, what data was involved and what was done.</li>
+  <li><b>Recover and review</b>: restore from backup if needed, fix the cause, and record the incident and the changes made.</li>
+</ol>
+
+<h2>10. Audits</h2>
+<p>The app has not had a third-party security audit of its own. Its hosting provider, Railway, holds a SOC 2 Type II report.</p>
+
+<h2>Contact</h2>
+<p>Report a security concern to <a href="mailto:amrani4online@gmail.com">amrani4online@gmail.com</a>. We acknowledge reports within 2 business days.</p>
+</main>
+</body>
+</html>
